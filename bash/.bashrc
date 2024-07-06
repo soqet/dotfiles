@@ -25,7 +25,7 @@ shopt -s checkwinsize
 
 # If set, the pattern "**" used in a pathname expansion context will
 # match all files and zero or more directories and subdirectories.
-#shopt -s globstar
+shopt -s globstar
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -81,4 +81,5 @@ export PATH=$PATH:/usr/local/zig
 # ~/bin
 export PATH=$PATH:~/bin
 
-
+# Set up fzf key bindings and fuzzy completion
+eval "$(fzf --bash)"
