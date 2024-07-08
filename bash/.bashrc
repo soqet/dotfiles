@@ -76,7 +76,7 @@ export GOPATH=$HOME/go
 export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 
 # zig
-export PATH=$PATH:/usr/local/zig
+# export PATH=$PATH:/usr/local/zig
 
 # ~/bin
 export PATH=$PATH:~/bin

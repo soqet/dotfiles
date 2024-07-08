@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 if [[ ! $(pidof wofi) ]]; then
-    TITLE="$( hyprctl clients -j | jq 'unique_by(.title)' | jq .[] | jq -r .title | wofi --config ~/.config/wofi/config --style  ~/.config/wofi/styles.css --show dmenu )"
-    if [ -n "$TITLE" ]; then
-        hyprctl dispatch movetoworkspace $( hyprctl activeworkspace -j | jq .id ),title:"$TITLE"
+    ADDRESS="$( hyprctl clients -j |  wofi  --style  ~/.config/wofi/style.css --show wg.so )"
+    if [ -n "$ADDRESS" ]; then
+        hyprctl dispatch movetoworkspace $( hyprctl activeworkspace -j | jq .id ),address:"$ADDRESS"
     fi    
 else
     pkill wofi
