@@ -591,6 +591,7 @@ require("lazy").setup({
 			--    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
 		end,
 	},
+	{ "wakatime/vim-wakatime", lazy = false },
 	{ import = "plugins" },
 }, {
 	ui = {

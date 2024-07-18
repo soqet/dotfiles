@@ -31,10 +31,12 @@
     "gtk-layer-shell": true,
     "height": 0,
     "hyprland/language": {
-      "format": "{}"
+      "format": "{}",
+      "format-en": "English",
     },
     "hyprland/window": {
-      "format": "{}"
+      "format": "{}",
+      "max-length": 40
     },
     "layer": "top",
     "memory": {

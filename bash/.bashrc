@@ -66,7 +66,7 @@ export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 
 source ~/.config/bash/git-prompt.sh
 
-export PS1='\[\e[\033[38;5;229m\]\u@\h \[\e[38;5;218m\]\W\[\e[\033[38;5;85m\] $(__git_ps1 "(%s)")\[\e[\033[00m\]\$ '
+export PS1='\[\e[\033[38;5;229m\]\u@\h \[\e[38;5;218m\]\W\[\e[\033[38;5;85m\] $(__git_ps1 "(%s) ")\[\e[\033[00m\]~> '
 
 
 # go variables
