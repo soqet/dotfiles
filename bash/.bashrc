@@ -63,20 +63,25 @@ fi
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 
 # enable git branch
-
 source ~/.config/bash/git-prompt.sh
 
-export PS1='\[\e[\033[38;5;229m\]\u@\h \[\e[38;5;218m\]\W\[\e[\033[38;5;85m\] $(__git_ps1 "(%s) ")\[\e[\033[00m\]~> '
+# previous PS1
+#export PS1='\[\e[\033[38;5;229m\]\u@\h \[\e[38;5;218m\]\W\[\e[\033[38;5;85m\] $(__git_ps1 "(%s) ")\[\e[\033[00m\]~> '
 
+# helper function to generate escape sequences
+RGB="printf \1\e[38;2;%s;%s;%sm\2"
+
+# mocha: https://catppuccin.com/palette
+RGB_YELLOW="$($RGB 249 226 175)"
+RGB_PINK="$($RGB 245 194 231)"
+RGB_TEAL="$($RGB 148 226 213)"
+RGB_LAVENDER="$($RGB 180 190 254)"
+export PS1='${RGB_YELLOW}\u@\h ${RGB_PINK}\W ${RGB_TEAL}$(__git_ps1 "(%s) ")${RGB_LAVENDER}~> \[\e[0m\]'
 
 # go variables
-
 export GOROOT=/usr/local/go
 export GOPATH=$HOME/go
 export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
-
-# zig
-# export PATH=$PATH:/usr/local/zig
 
 # ~/bin
 export PATH=$PATH:~/bin
