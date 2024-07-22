@@ -8,10 +8,9 @@ return {
 
 			wk.add({
 				{ "<leader>c", desc = "[C]ode" },
-				{ "<leader>d", desc = "[D]ocument" },
+				{ "<leader>sl", desc = "[L]SP" },
 				{ "<leader>r", desc = "[R]ename" },
 				{ "<leader>s", desc = "[S]earch" },
-				{ "<leader>w", desc = "[W]orkspace" },
 				{ "<leader>t", desc = "[T]oggle" },
 				{ "<leader>h", desc = "Git [H]unk" },
 				{ "<leader>h", desc = "Git [H]unk", mode = "v" },

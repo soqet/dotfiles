@@ -54,6 +54,10 @@ vim.opt.scrolloff = 10
 vim.opt.hlsearch = true
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
+-- Blackhole keymaps
+vim.keymap.set("x", "<leader>p", [["_dP]], { desc = "Blackhole [P]aste" })
+vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]], { desc = "Blackhole [d]elete" })
+
 -- Diagnostic keymaps
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous [D]iagnostic message" })
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next [D]iagnostic message" })
@@ -75,6 +79,26 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
 	callback = function()
 		vim.highlight.on_yank()
+	end,
+})
+
+function setWeztermUserVar(name, val)
+	os.execute(string.format('printf "\\033]1337;SetUserVar=%%s=%%s\\007" %s `echo -n %s | base64`', name, val))
+end
+
+vim.api.nvim_create_autocmd("BufEnter", {
+	desc = "Set uservar for wezterm to display current buffer",
+	group = vim.api.nvim_create_augroup("current-buffer-uservar", { clear = true }),
+	callback = function()
+		setWeztermUserVar("NVIM_CUURENT_BUFFER", vim.api.nvim_buf_get_name(0))
+	end,
+})
+
+vim.api.nvim_create_autocmd("BufWinLeave", {
+	desc = "Set uservar for wezterm to display current buffer",
+	group = vim.api.nvim_create_augroup("current-buffer-uservar", { clear = true }),
+	callback = function()
+		setWeztermUserVar("NVIM_CUURENT_BUFFER", "")
 	end,
 })
 
@@ -180,7 +204,6 @@ require("lazy").setup({
 			vim.keymap.set("n", "<leader>sk", builtin.keymaps, { desc = "[S]earch [K]eymaps" })
 			vim.keymap.set("n", "<leader>sf", builtin.find_files, { desc = "[S]earch [F]iles" })
 			vim.keymap.set("n", "<leader>ss", builtin.builtin, { desc = "[S]earch [S]elect Telescope" })
-			vim.keymap.set("n", "<leader>sw", builtin.grep_string, { desc = "[S]earch current [W]ord" })
 			vim.keymap.set("n", "<leader>sg", builtin.live_grep, { desc = "[S]earch by [G]rep" })
 			vim.keymap.set("n", "<leader>sd", builtin.diagnostics, { desc = "[S]earch [D]iagnostics" })
 			vim.keymap.set("n", "<leader>sr", builtin.resume, { desc = "[S]earch [R]esume" })
@@ -253,12 +276,12 @@ require("lazy").setup({
 
 					-- Fuzzy find all the symbols in your current document.
 					--  Symbols are things like variables, functions, types, etc.
-					map("<leader>ds", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
+					map("<leader>sld", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
 
 					-- Fuzzy find all the symbols in your current workspace.
 					--  Similar to document symbols, except searches over your entire project.
 					map(
-						"<leader>ws",
+						"<leader>slw",
 						require("telescope.builtin").lsp_dynamic_workspace_symbols,
 						"[W]orkspace [S]ymbols"
 					)
