@@ -86,19 +86,11 @@ function setWeztermUserVar(name, val)
 	os.execute(string.format('printf "\\033]1337;SetUserVar=%%s=%%s\\007" %s `echo -n %s | base64`', name, val))
 end
 
-vim.api.nvim_create_autocmd("BufEnter", {
+vim.api.nvim_create_autocmd({ "BufEnter", "VimEnter", "BufReadPost" }, {
 	desc = "Set uservar for wezterm to display current buffer",
 	group = vim.api.nvim_create_augroup("current-buffer-uservar", { clear = true }),
 	callback = function()
-		setWeztermUserVar("NVIM_CUURENT_BUFFER", vim.api.nvim_buf_get_name(0))
-	end,
-})
-
-vim.api.nvim_create_autocmd("BufWinLeave", {
-	desc = "Set uservar for wezterm to display current buffer",
-	group = vim.api.nvim_create_augroup("current-buffer-uservar", { clear = true }),
-	callback = function()
-		setWeztermUserVar("NVIM_CUURENT_BUFFER", "")
+		setWeztermUserVar("NVIM_CURRENT_BUFFER", vim.api.nvim_buf_get_name(0))
 	end,
 })
 

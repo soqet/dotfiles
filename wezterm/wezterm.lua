@@ -39,7 +39,7 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
 	local dir = pane.current_working_dir
 	local process = pane.foreground_process_name
 	if dir == nil then
-		return " " .. pane.title .. " "
+		return string.format(" %d: %s ", tab.tab_index + 1, pane.title)
 	end
 	local filePath = dir.file_path
 	local p = getLastPathElem(process) -- string.match(process, "[^%/]*$")
@@ -48,16 +48,17 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
 		d = filePath
 	end
 	local currentBuffer = tab.active_pane.user_vars.NVIM_CURRENT_BUFFER
+	print(currentBuffer)
 	if p == "nvim" and currentBuffer ~= nil then
-		if currentBuffer:sub(0, #filePath) == filePath then
-			local suffix = currentBuffer:sub(#filePath + 1)
-			d = d .. "/" .. suffix
+		if currentBuffer:sub(0, #filePath - 1) == filePath:sub(0, #filePath - 1) then
+			local suffix = currentBuffer:sub(#filePath)
+			d = d .. suffix
 		else
 			d = ".../" .. getLastPathElem(currentBuffer)
 		end
 	end
 	return {
-		{ Text = string.format(" %s: %s ", p, d) },
+		{ Text = string.format(" %d: %s %s ", tab.tab_index + 1, p, d) },
 	}
 end)
 
