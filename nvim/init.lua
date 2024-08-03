@@ -64,13 +64,6 @@ vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next [D]iagn
 vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show diagnostic [E]rror messages" })
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
 
--- Keybinds to make split navigation easier.
---  Use CTRL+<hjkl> to switch between windows
--- vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
--- vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
--- vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
--- vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
-
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
 --  See `:help vim.highlight.on_yank()`
@@ -82,11 +75,13 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	end,
 })
 
-function setWeztermUserVar(name, val)
+vim.api.nvim_create_user_command("We", "w | e", { nargs = 0 })
+
+local function setWeztermUserVar(name, val)
 	os.execute(string.format('printf "\\033]1337;SetUserVar=%%s=%%s\\007" %s `echo -n %s | base64`', name, val))
 end
 
-vim.api.nvim_create_autocmd({ "BufEnter", "VimEnter", "BufReadPost" }, {
+vim.api.nvim_create_autocmd({ "BufEnter" }, {
 	desc = "Set uservar for wezterm to display current buffer",
 	group = vim.api.nvim_create_augroup("current-buffer-uservar", { clear = true }),
 	callback = function()
@@ -344,7 +339,21 @@ require("lazy").setup({
 			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 			local servers = {
 				-- clangd = {},
-				gopls = {},
+				gopls = {
+					settings = {
+						gopls = {
+							codelenses = {
+								gc_details = true, -- doesn't work  TODO: find a way to bind this
+							},
+							hints = {
+								constantValues = true,
+								compositeLiteralFields = true,
+								parameterNames = true,
+							},
+							staticcheck = true,
+						},
+					},
+				},
 				lua_ls = {
 					-- cmd = {...},
 					-- filetypes = { ...},
@@ -488,6 +497,7 @@ require("lazy").setup({
 					-- Accept ([y]es) the completion.
 					--  This will auto-import if your LSP supports it.
 					--  This will expand snippets if the LSP sent a snippet.
+					["<C-i>"] = cmp.mapping.confirm({ select = true }),
 					["<C-y>"] = cmp.mapping.confirm({ select = true }),
 					["<C-n>"] = cmp.mapping.close(),
 

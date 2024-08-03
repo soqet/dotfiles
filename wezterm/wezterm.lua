@@ -53,7 +53,7 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
 		if currentBuffer:sub(0, #filePath - 1) == filePath:sub(0, #filePath - 1) then
 			local suffix = currentBuffer:sub(#filePath)
 			d = d .. suffix
-		else
+		elseif currentBuffer ~= "" then
 			d = ".../" .. getLastPathElem(currentBuffer)
 		end
 	end
