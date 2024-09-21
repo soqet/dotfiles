@@ -31,6 +31,18 @@ function parse_git_branch() {
 setopt prompt_subst
 PROMPT='%F{yellow}%n@%M %F{magenta}%1~ %F{#94e2d5}$(parse_git_branch)%F{#b4befe}~> %f'
 
+RPROMPT='%F{#eba0ac}${${${$(date +%T -d "0 + ${_elapsed} seconds")#"00:"}#"00:"}#"00"}%f'
+
+preexec () {
+   _start=$SECONDS
+}
+
+precmd () {
+   (( _start >= 0 )) && _elapsed=($(( SECONDS-_start )))
+   (( _start <= 0 )) && _elapsed=0
+   _start=-1 
+}
+
 
 # ssh-agent
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
